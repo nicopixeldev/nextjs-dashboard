@@ -60,6 +60,8 @@ export async function fetchCardData() {
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
          FROM invoices`;
 
+    // Start executing all data fetches at the same time, which can lead to performance gains.
+    // Use a native JavaScript pattern that can be applied to any library or framework.
     const data = await Promise.all([
       invoiceCountPromise,
       customerCountPromise,
@@ -157,6 +159,8 @@ export async function fetchInvoiceById(id: string) {
       // Convert amount from cents to dollars
       amount: invoice.amount / 100,
     }));
+
+    console.log('invoice***', invoice);
 
     return invoice[0];
   } catch (error) {
