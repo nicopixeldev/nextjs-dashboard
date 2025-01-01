@@ -12,6 +12,15 @@ export type State = {
     customerId?: string[];
     amount?: string[];
     status?: string[];
+  };
+  message?: string | null;
+};
+
+export type CreateInvoiceState = {
+  errors?: {
+    customerId?: string[];
+    amount?: string[];
+    status?: string[];
     numberOfInvoices?: string[];
   };
   message?: string | null;
@@ -34,13 +43,13 @@ const FormSchema = z.object({
 const CreateInvoice = FormSchema.omit({ id: true, date: true }).extend({
   numberOfInvoices: z
     .number()
-    .lt(10, {
+    .lte(10, {
       message:
         "Really? are you trying to hack the system? 🤔 Good luck with that ",
     }),
 });
 
-export async function createInvoice(prevState: State, formData: FormData) {
+export async function createInvoice(prevState: CreateInvoiceState, formData: FormData) {
   const { rows: invoiceCountRows } = await sql`SELECT COUNT(*) FROM invoices`;
   const invoiceCount = parseInt(invoiceCountRows[0].count, 10);
 
