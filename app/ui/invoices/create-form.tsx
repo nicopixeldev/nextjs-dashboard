@@ -12,9 +12,17 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/button";
 
-export default function Form({ customers }: { customers: CustomerField[] }) {
+export default function CreateInvoiceForm({
+  customers,
+  numberOfInvoices,
+}: {
+  customers: CustomerField[];
+  numberOfInvoices: number;
+}) {
   const initialState: State = { message: null, errors: {} };
   const [state, formAction] = useActionState(createInvoice, initialState);
+
+  console.log("state", state);
 
   return (
     <form action={formAction}>
@@ -115,6 +123,21 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           </div>
         </fieldset>
       </div>
+      {numberOfInvoices >= 10 && (
+        <p className="text-red-500 text-sm mt-2 text-right">
+          You cannot add a new invoice because there is a limit of 10 invoices.
+          Please delete one first.
+        </p>
+      )}
+
+      <div aria-live="polite" aria-atomic="true">
+        {state.errors?.numberOfInvoices &&
+          state.errors.numberOfInvoices.map((error: string) => (
+            <p className="mt-2 text-sm text-red-500 text-right" key={error}>
+              {error}
+            </p>
+          ))}
+      </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/invoices"
@@ -122,7 +145,10 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         >
           Cancel
         </Link>
-        <Button type="submit">Create Invoice</Button>
+
+        <Button type="submit" disabled={numberOfInvoices >= 10}>
+          Create Invoice
+        </Button>
       </div>
     </form>
   );

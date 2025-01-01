@@ -7,14 +7,19 @@ import { fetchFilteredInvoices } from '@/app/lib/data';
 export default async function InvoicesTable({
   query,
   currentPage,
+  numberOfInvoices,
 }: {
   query: string;
   currentPage: number;
+  numberOfInvoices: number;
 }) {
   const invoices = await fetchFilteredInvoices(query, currentPage);
 
   return (
     <div className="mt-6 flow-root">
+      <div className="mb-4 flex justify-between">
+        <p className="text-sm text-gray-600">Total Invoices: {numberOfInvoices}</p>
+      </div>
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">

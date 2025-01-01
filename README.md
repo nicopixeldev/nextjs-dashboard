@@ -100,6 +100,13 @@ Follow these steps to get the project up and running on your local machine:
    ```  
    Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.  
 
+---
+
+## User Login Information
+
+To log in to the application, use the following credentials:
+- **Email:** user@nextmail.com
+- **Password:** 123456
 
 ---
 
@@ -110,4 +117,4 @@ We welcome contributions to make this project even better! 🚀
 - **Feature Requests**: Have an idea for a feature? Let the world know!  
 - **Pull Requests**: Submit a PR to keep the project up-to-date and share your improvements with others.  
 
-Together, we can make this a valuable resource for developers looking to learn and build with **Next.js**.  
+Together, we can make this a valuable resource for developers looking to learn and build with **Next.js**.

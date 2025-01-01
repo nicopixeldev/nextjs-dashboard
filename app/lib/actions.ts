@@ -12,6 +12,7 @@ export type State = {
     customerId?: string[];
     amount?: string[];
     status?: string[];
+    numberOfInvoices?: string[];
   };
   message?: string | null;
 };
@@ -30,20 +31,31 @@ const FormSchema = z.object({
   date: z.string(),
 });
 
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
+const CreateInvoice = FormSchema.omit({ id: true, date: true }).extend({
+  numberOfInvoices: z
+    .number()
+    .lt(10, {
+      message:
+        "Really? are you trying to hack the system? 🤔 Good luck with that ",
+    }),
+});
 
 export async function createInvoice(prevState: State, formData: FormData) {
+  const { rows: invoiceCountRows } = await sql`SELECT COUNT(*) FROM invoices`;
+  const invoiceCount = parseInt(invoiceCountRows[0].count, 10);
+
   const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get("customerId"),
     amount: formData.get("amount"),
     status: formData.get("status"),
+    numberOfInvoices: invoiceCount,
   });
 
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Create Invoice.",
+      message: "Failed to Create Invoice.",
     };
   }
 
