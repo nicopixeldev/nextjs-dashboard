@@ -43,7 +43,7 @@ const FormSchema = z.object({
 const CreateInvoice = FormSchema.omit({ id: true, date: true }).extend({
   numberOfInvoices: z
     .number()
-    .lte(10, {
+    .lt(10, {
       message:
         "Really? are you trying to hack the system? 🤔 Good luck with that ",
     }),
